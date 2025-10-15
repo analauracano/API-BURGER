@@ -8,7 +8,7 @@ class ProductController {
     category: Yup.string().required(),
 });
         try {    
-            schema.validateSync(req.body, { abortEarly: false, strict: true });
+            schema.validateSync(req.body, { abortEarly: false });
         } catch (err) {
             return res.status(400).json({ error: err.errors });
         }
