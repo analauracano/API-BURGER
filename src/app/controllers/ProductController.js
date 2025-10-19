@@ -24,11 +24,12 @@ class ProductController {
         path: filename
     })
 
-        return res.status(201).json(newProduct);
+    return res.status(201).json(newProduct);
     }
 
     async index(_req, res) {
         const products = await Product.findAll();
+        console.log(_req.userId);
         return res.status(201).json(products);
     }
 }
