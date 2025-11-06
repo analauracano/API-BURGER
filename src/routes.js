@@ -8,6 +8,7 @@ import authMiddleware from "./app/middlewares/auth.js";
 import CategoryController from "./app/controllers/CategoryController.js";
 import adminMiddleware from "./app/middlewares/admin.js";
 import OrderController from "./app/controllers/OrderController.js";
+import GoogleSessionController from "./app/controllers/GoogleSessionController.js";
 
 const routes = new Router();
 
@@ -15,6 +16,7 @@ const upload = multer(multerConfig)
 
 routes.post('/users', UserController.store);
 routes.post('/sessions', SessionController.store);
+routes.post("/sessions/google", GoogleSessionController.store);
 
 routes.use(authMiddleware);
 

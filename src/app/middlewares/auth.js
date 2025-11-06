@@ -1,32 +1,26 @@
-import jwt from 'jsonwebtoken';
-import authConfig from '../../config/auth.js';
+import jwt from "jsonwebtoken";
+import authConfig from "../../config/auth.js";
 
 const authMiddleware = (req, res, next) => {
-    console.log(req.headers)
+  const authHeader = req.headers.authorization;
 
-    const authToken = req.headers.authorization;
+  if (!authHeader) {
+    return res.status(401).json({ error: "No token provided" });
+  }
 
-    if (!authToken) {
-        return res.status(401).json({ error: 'No token provided' });
-    }
+  const [, token] = authHeader.split(" ");
 
-    const token = authToken.split(' ')[1];
+  try {
+    const decoded = jwt.verify(token, authConfig.secret);
 
-    try {
-        jwt.verify(token, authConfig.secret, (error, decoded) => {
-        if(error){
-            throw Error()
-        }
+    req.userId = decoded.id;
+    req.userName = decoded.name;
+    req.userIsAdmin = decoded.admin;
 
-        req.userId = decoded.id;
-        req.userName = decoded.name;
-        req.userIsAdmin = decoded.admin;
-        });
-    } catch (_error) {
-        return res.status(401).json({ error: 'Token is invalid' });
-
-    }
     return next();
+  } catch {
+    return res.status(401).json({ error: "Token is invalid" });
+  }
 };
 
 export default authMiddleware;
