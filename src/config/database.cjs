@@ -3,10 +3,10 @@ module.exports = {
     host: 'localhost',
     port: 5432,
     username: 'admin',
-    password: 'Largatixa1*',
+    password: '123456',
     database: 'burger-db',
     define: {
-        timeStamps: true,
+        timestamps: true,
         underscored: true,
         underscoredAll: true,
     },

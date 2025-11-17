@@ -7,7 +7,7 @@ class ProductController {
     const schema = Yup.object({
     name: Yup.string().required(),
     price: Yup.number().required(),
-    category_id: Yup.number().required(),
+    category_id: Yup.string().required(),
     offer: Yup.boolean(),
 });
         try {    
@@ -17,15 +17,15 @@ class ProductController {
         }
 
     const { name, price, category_id, offer } = req.body;
-    const { filename } = req.file;
+    const filename = req.file ? req.file.filename : null;
 
     const newProduct = await Product.create({
-        name,
-        price,
-        category_id,
-        path: filename,
-        offer
-    })
+    name,
+    price,
+    category_id,
+    path: filename,
+    offer
+});
 
     return res.status(201).json(newProduct);
     }
