@@ -9,6 +9,7 @@ import CategoryController from "./app/controllers/CategoryController.js";
 import adminMiddleware from "./app/middlewares/admin.js";
 import OrderController from "./app/controllers/OrderController.js";
 import GoogleSessionController from "./app/controllers/GoogleSessionController.js";
+import CreatePaymentIntentController from "./app/controllers/stripe/CreatePaymentIntentController.js";
 
 const routes = new Router();
 
@@ -31,5 +32,5 @@ routes.get('/categories', CategoryController.index);
 routes.post('/orders', OrderController.store);
 routes.put('/orders/:id', adminMiddleware, OrderController.update);
 routes.get('/orders', OrderController.index);
-
+routes.post('/create-payment-intent', CreatePaymentIntentController.store);
 export default routes;
