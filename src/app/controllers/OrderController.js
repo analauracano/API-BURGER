@@ -21,11 +21,11 @@ class OrderController {
       return res.status(400).json({ error: err.errors });
     }
 
-    const { userId, userName } = req; // passado pelo middleware auth
+    const { userId, userName } = req;
     const { products } = req.body;
 
     try {
-      // Buscar produtos no SQL (Postgres)
+      // Busca dos produtos no Postgres
       const productIds = products.map((p) => p.id);
 
       const findedProducts = await Product.findAll({
@@ -37,20 +37,21 @@ class OrderController {
         },
       });
 
-      // Mapear produtos para o formato que o MongoDB espera
+      // Mapeamento correto dos produtos
       const mappedProducts = findedProducts.map((product) => {
         const quantity = products.find((p) => p.id === product.id).quantity;
+
         return {
           id: product.id,
           name: product.name,
           price: product.price,
-          url: product.path ? `/files/${product.path}` : '', // rota de imagens
+          url: product.url, // ✔ usa VIRTUAL URL correto
           category: product.category.name,
           quantity,
         };
       });
 
-      // Criar pedido no MongoDB
+      // Criação do pedido no MongoDB
       const order = await Order.create({
         user: { id: userId, name: userName },
         products: mappedProducts,
@@ -64,7 +65,7 @@ class OrderController {
     }
   }
 
-  // Atualizar status do pedido
+  // Atualizar status
   async update(req, res) {
     const schema = Yup.object({
       status: Yup.string().required(),
@@ -81,9 +82,11 @@ class OrderController {
 
     try {
       const updated = await Order.updateOne({ _id: id }, { status });
+
       if (updated.matchedCount === 0) {
         return res.status(404).json({ error: 'Pedido não encontrado' });
       }
+
       return res.status(200).json({ message: 'Status atualizado com sucesso' });
     } catch (err) {
       console.error(err);

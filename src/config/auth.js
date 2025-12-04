@@ -1,4 +1,4 @@
 export default {
-    secret: 'e8897a9033cf69d974ae0f481e2b9088',
-    expiresIn: '30d',
-}
+  secret: process.env.JWT_SECRET,
+  expiresIn: process.env.JWT_EXPIRES_IN,
+};
