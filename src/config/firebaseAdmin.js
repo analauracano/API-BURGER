@@ -1,10 +1,7 @@
 import admin from "firebase-admin";
-import { readFileSync } from "node:fs";
-import { join } from "node:path";
 
-const serviceAccount = JSON.parse(
-  readFileSync(join(process.cwd(), "firebase-service-account.json"))
-);
+// Lê o JSON do Service Account da variável de ambiente
+const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
