@@ -19,7 +19,7 @@ class Database {
     );
     }
     mongo() {
-        this.mongooseConnection = mongoose.connect('mongodb://localhost:27017/burger',);
+        this.mongooseConnection = mongoose.connect(process.env.MONGO_URL,);
     }
 }
 
