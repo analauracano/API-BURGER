@@ -5,22 +5,23 @@ import cors from 'cors';
 
 const app = express();
 
-// ✅ Configura CORS para aceitar requisições do frontend no Netlify
 app.use(cors({
-  origin: "https://devburgerlaurinha.netlify.app",
-  credentials: true
+  origin: [
+    "https://devburgerlaurinha.netlify.app",
+    "http://localhost:5173"
+  ],
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+  credentials: true,
 }));
 
-// ✅ Permite receber JSON e urlencoded
+// 🔥 Garantir respostas ao preflight
+app.options('*', cors());
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
-// ✅ Rotas para uploads de arquivos
 app.use('/product-file', fileRouteConfig);
 app.use('/category-file', fileRouteConfig);
-
-// ✅ Rotas da API
 app.use(routes);
 
-// ✅ Exporta app (para usar com server.js)
 export default app;
