@@ -13,21 +13,15 @@ class GoogleSessionController {
     }
 
     try {
-      // ✅ 1. Validar ID Token do Firebase
       const decoded = await admin.auth().verifyIdToken(idToken);
-
       const { uid, email, name, picture } = decoded;
 
       if (!email) {
-        return res
-          .status(400)
-          .json({ error: "Email não retornado pelo Google" });
+        return res.status(400).json({ error: "Email não retornado pelo Google" });
       }
 
-      // ✅ 2. Verificar se o usuário já existe
       let user = await User.findOne({ where: { email } });
 
-      // ✅ Criar automaticamente, se não existir
       if (!user) {
         user = await User.create({
           name: name || "Usuário Google",
@@ -39,13 +33,8 @@ class GoogleSessionController {
         });
       }
 
-      // ✅ 3. Gerar token JWT
       const token = jwt.sign(
-        {
-          id: user.id,
-          admin: user.admin,
-          name: user.name,
-        },
+        { id: user.id, admin: user.admin, name: user.name },
         authConfig.secret,
         { expiresIn: authConfig.expiresIn }
       );
