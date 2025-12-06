@@ -15,9 +15,6 @@ app.use(cors({
   credentials: true,
 }));
 
-// 🔥 Garantir respostas ao preflight
-app.options('*', cors());
-
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use('/product-file', fileRouteConfig);
