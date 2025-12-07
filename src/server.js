@@ -1,13 +1,13 @@
-import 'dotenv/config'; // ⚠️ Isso deve vir antes de qualquer outro import
+import 'dotenv/config';
 import express from 'express';
 import path from 'path';
 import app from './app.js';
-import './database/index.js';
+import './database/index.js'; // sua conexão com MongoDB
 
 const __dirname = path.resolve();
-const port = process.env.PORT
+const port = process.env.PORT || 3001;
 
-// Servir arquivos de produtos
+// Servir uploads localmente
 app.use('/product-file', express.static(path.resolve(__dirname, 'uploads')));
 
-app.listen(port, () => console.log('Server is running at port 3001'));
+app.listen(port, () => console.log(`Server is running at port ${port}`));

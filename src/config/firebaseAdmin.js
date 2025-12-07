@@ -1,12 +1,9 @@
-import admin from "firebase-admin";
+import admin from "firebase-admin"; import { readFileSync } from "node:fs"; import { join } from "node:path"; 
 
-const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
+const serviceAccount = JSON.parse( readFileSync(join(process.cwd(), "firebase-service-account.json")) 
+); 
 
-// Corrige quebras de linha para o Firebase ler corretamente
-serviceAccount.private_key = serviceAccount.private_key.replace(/\\n/g, "\n");
-
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
-});
+admin.initializeApp({ credential: admin.credential.cert(serviceAccount), 
+}); 
 
 export default admin;

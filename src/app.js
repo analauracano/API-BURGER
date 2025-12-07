@@ -1,24 +1,15 @@
-import express from 'express';
 import routes from './routes.js';
 import fileRouteConfig from './config/fileRoutes.cjs';
 import cors from 'cors';
+import express from 'express';
 
 const app = express();
-
-app.use(cors({
-  origin: [
-    "https://devburgerlaurinha.netlify.app",
-    "http://localhost:5173"
-  ],
-  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-  allowedHeaders: ["Content-Type", "Authorization"],
-  credentials: true,
-}));
-
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use('/product-file', fileRouteConfig);
-app.use('/category-file', fileRouteConfig);
+app.use('/product-file', fileRouteConfig)
+app.use('/category-file', fileRouteConfig)
+
 app.use(routes);
 
 export default app;
